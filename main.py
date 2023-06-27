@@ -28,11 +28,12 @@ tamanioRecntangulosancho=0
 iniciar=False
 personaje_x = 200
 personaje_y = 150
+enemigo_x=[10,110,210,310,410,550]
 enemigo_y=0
-enemigo_x=[10,110,210,310,410]
 desplazamientoEnemigo=False
 tecla_izquierda_presionada=False
 tecla_derecha_presionada=False
+direccionMovimiento=False
 
 
 def cargarVolumen():
@@ -100,6 +101,7 @@ def main():
     global enemigo_y
     global tecla_derecha_presionada
     global tecla_izquierda_presionada
+    global direccionMovimiento
     global RED
 
     screen = display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -180,21 +182,47 @@ def main():
         if iniciar:
             screen.blit(cargarImagen('fondo/Background17.jpg',600,300), (0, 0))
             screen.blit(personaje_imagen, (personaje_x, personaje_y))
+         
             screen.blit(personaje_enemigo,(enemigo_x[0],enemigo_y))
-            screen.blit(personaje_enemigo,(enemigo_x[1],enemigo_y))
+            screen.blit(personaje_enemigo,(enemigo_x[5],enemigo_y))
             
         else:
             
             screen.blit(cargarImagen('fondo/Background18.jpg',600,300), (0, 0))
             screen.blit(mostrarTexto("Escoje un personaje",50,RED),(120,30))
 
-        
+        if desplazamientoEnemigo:
+            
+            movimiento =random.uniform(0.5, 0.9)
+            if  direccionMovimiento:
+                enemigo_x[0]+=5
+                enemigo_x[5]-=5
+                print('sumando')
+                if enemigo_x[0]>=570:
+                    direccionMovimiento=False
+                    print('cambio')
+
+            if direccionMovimiento==False:
+                enemigo_x[0]-=5
+                enemigo_x[5]+=5
+                print('restando')
+                if enemigo_x[0]<=0:
+                    direccionMovimiento=True
+                    print('no aun no ')
+
+            if enemigo_y<320:
+                enemigo_y+=movimiento
+
+            else:
+                enemigo_y=0
+
         screen.blit(cargarImagen('jugadores/stand.png',tamanioImagen[0][0],tamanioImagen[0][1]),posicionPersonajes[0])
         screen.blit(cargarImagen('jugadores/standAlien.png',tamanioImagen[1][0],tamanioImagen[1][1]),posicionPersonajes[1])
         screen.blit(cargarImagen('jugadores/standrobot.png',tamanioImagen[2][0],tamanioImagen[2][1]),posicionPersonajes[2])
         screen.blit(cargarImagen('imagenes/masVolumen.svg',30,30),(50,265))
         
-
+       
+        
         if mixer.music.get_volume()==0.0:
             screen.blit(cargarImagen('imagenes/sinVolumen.svg',30,30),(10,265))
         else:
@@ -221,12 +249,7 @@ def main():
         screen.blit(mostrarTexto("Atari", tamanioLetras,RED), (255, 202))
         screen.blit(mostrarTexto("Robot", tamanioLetras,RED), (395, 202)) 
 
-        if desplazamientoEnemigo:
-            movimiento =random.uniform(0.5, 0.9)
-            if enemigo_y<320:
-                enemigo_y+=movimiento
-            else:
-                enemigo_y=0
+        
 
      
         if animacion:
@@ -274,14 +297,16 @@ def main():
         
         # Actualizar la posición del personaje según las teclas presionadas
         if tecla_izquierda_presionada:
-            personaje_x -= 0.5
+            personaje_x -= 2
         if tecla_derecha_presionada:
-            personaje_x += 0.5
+            personaje_x += 2
         
         
         #print(personajeSeleccionado)
         #print(mouse.get_pos())
         display.update()
+        
+        #codi
 
     quit()
 
