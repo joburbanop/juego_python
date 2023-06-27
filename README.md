@@ -28,7 +28,7 @@ pip install pygame
 
    ## Autor
 
-- Tu Nombre <joburbanop>
+- Jonathan Camilo Burbano Pazos
 
 
 
